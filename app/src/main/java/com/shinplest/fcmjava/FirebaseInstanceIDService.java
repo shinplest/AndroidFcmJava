@@ -3,9 +3,12 @@ package com.shinplest.fcmjava;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -31,6 +34,10 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        Log.d("Firebase", "메세지 수신");
+        Log.d("Firebase", remoteMessage.toString());
+
+
         if (remoteMessage != null && remoteMessage.getData().size() > 0) {
             sendNotification(remoteMessage);
         }
@@ -45,6 +52,32 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("message");
+        String click_action = remoteMessage.getData().get("click_action");
+
+        Log.d("Firebase", click_action);
+
+
+        Intent intent;
+        if (click_action.equals("www.naver.com")) {
+            intent = new Intent(this, MainActivity.class);
+            intent.putExtra("click_action", click_action);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+//        }else if(click_action.equals("NotiAcivity")){//이런 액티비티 이름을 잘못 타이핑했네.ㅋ
+//            intent = new Intent(this, NotiAcivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        }
+//        else if (click_action.equals("NewsActivity")){
+//            intent = new Intent(this, NewsActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        } else {
+//            intent = new Intent(this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        }
+
+       // PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
+
 
         /**
          * 오레오 버전부터는 Notification Channel이 없으면 푸시가 생성되지 않는 현상이 있습니다.

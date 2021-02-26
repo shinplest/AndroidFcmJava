@@ -26,7 +26,13 @@ public class MainActivity extends AppCompatActivity {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
 
-        mWebView.loadUrl("https://m.uzumarket.co.kr?cafe_mkt=ue_pfp0617cc35");
+
+        String click_action = getIntent().getStringExtra("click_action");
+
+        if (click_action != null) {
+            mWebView.loadUrl(click_action);
+        } else
+            mWebView.loadUrl("https://m.uzumarket.co.kr?cafe_mkt=ue_pfp0617cc35");
 
         mWebView.setWebChromeClient(new WebChromeClient());
 
